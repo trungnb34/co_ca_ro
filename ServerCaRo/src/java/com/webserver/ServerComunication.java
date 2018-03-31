@@ -5,6 +5,7 @@
  */
 package com.webserver;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.HashSet;
@@ -43,11 +44,13 @@ public class ServerComunication {
         }
     }
     @OnMessage
-    public void processMessage(String message, Session session) {
+    public void processMessage(String message, Session session) throws IOException {
         ActionsUser action = this.decoderJson(message);
-        if(action.getType() == StaticVariable.REGISTER) {
+        session.getBasicRemote().sendText("connect to server is success" + action.getType());
+        if(StaticVariable.REGISTER.equals(action.getType())) {
             this.setNameUser(action.getValue(), session);
-        } else if(action.getType() == StaticVariable.MESSAGE) {
+//            session.getBasicRemote().sendText();
+        } else if(StaticVariable.MESSAGE.equals(action.getType())) {
             
         }
     }

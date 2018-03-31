@@ -5,12 +5,11 @@
  */
 package clientcaro;
 
-import staic.variable.*;
-
 /**
  *
  * @author mrtrung
  */
 public class StaticVariable {
-    public static String url = "";
+    public static String url = "ws://localhost:8080/ServerCaRo/ca-ro";
+    public static String errorRegister = "Tên người chơi đã được sử dụng";
 }
