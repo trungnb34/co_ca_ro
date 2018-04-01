@@ -46,13 +46,29 @@ public class ServerComunication {
     @OnMessage
     public void processMessage(String message, Session session) throws IOException {
         ActionsUser action = this.decoderJson(message);
-        session.getBasicRemote().sendText("connect to server is success" + action.getType());
         if(StaticVariable.REGISTER.equals(action.getType())) {
-            this.setNameUser(action.getValue(), session);
-//            session.getBasicRemote().sendText();
+            if(this.checkNameUser(action.getValue())) {
+                this.setNameUser(action.getValue(), session);
+                session.getUserProperties().put("name", action.getValue());
+                session.getBasicRemote().sendText("true");
+            } else {
+                session.getBasicRemote().sendText("false");
+            }
         } else if(StaticVariable.MESSAGE.equals(action.getType())) {
             
         }
+    }
+    
+    private boolean checkNameUser(String name) {
+        Iterator<User> userRegister = userPlayGame.iterator();
+        boolean checkUserName = true;
+        while(userRegister.hasNext()) {
+            if(name.equals(userRegister.next().getName())) {
+                checkUserName = false;
+                break;
+            }
+        }
+        return checkUserName;
     }
     
     public void setNameUser(String message, Session session) {

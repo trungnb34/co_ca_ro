@@ -5,6 +5,11 @@
  */
 package clientcaro;
 
+import WebSocket.ClientEndpoint;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import javax.websocket.DeploymentException;
+
 /**
  *
  * @author mrtrung
@@ -14,7 +19,7 @@ public class ClientCaRo {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException, DeploymentException, IOException, InterruptedException {
         // TODO code application logic here
         FromRegister from = new FromRegister();
         from.setVisible(true);

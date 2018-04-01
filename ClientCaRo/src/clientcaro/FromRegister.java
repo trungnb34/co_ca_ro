@@ -7,7 +7,10 @@ package clientcaro;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.websocket.DeploymentException;
+import WebSocket.ClientEndpoint;
 
 /**
  *
@@ -18,15 +21,23 @@ public class FromRegister extends javax.swing.JFrame {
     /**
      * Creates new form FromRegister
      */
-    public FromRegister() throws URISyntaxException, DeploymentException, IOException {
+    public FromRegister(){
         initComponents();
-        this.connectToServer();
+//        this.registerToServer("TRUNG");
     }
     
-    private void connectToServer() throws URISyntaxException, DeploymentException, IOException {
-        CommunityServer conectToServer = new CommunityServer();
-        System.out.println("Connect to server");
-        conectToServer.sendMessage("REGISTER", "TRUNG");
+    private void registerToServer(String name) throws URISyntaxException, DeploymentException, IOException {
+        String message = null;
+        ClientEndpoint clientEndpoint = new ClientEndpoint(message);
+        clientEndpoint.sendMessage("REGISTER", name);
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FromRegister.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(StaticVariable.StaticVariable.message.equals("true")) {
+            this.errorRegister.setText(StaticVariable.StaticVariable.errorRegister);
+        }
     }
     
     
@@ -65,25 +76,25 @@ public class FromRegister extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(nameUser))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(jLabel1)
-                        .addGap(0, 85, Short.MAX_VALUE)))
+                        .addGap(49, 49, 49)
+                        .addComponent(errorRegister)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(errorRegister)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(93, 93, 93)
+                .addComponent(jLabel1)
+                .addContainerGap(96, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(nameUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nameUser, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(errorRegister)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -97,20 +108,28 @@ public class FromRegister extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void nameUserKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameUserKeyPressed
-        // TODO add your handling code here;
-        System.out.println(evt.getKeyCode());
+        this.errorRegister.setText("");
         if(evt.getKeyCode() == 10) {
-            
+            String name = this.nameUser.getText();
+            try {
+                this.registerToServer(name);
+            } catch (URISyntaxException ex) {
+                Logger.getLogger(FromRegister.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (DeploymentException ex) {
+                Logger.getLogger(FromRegister.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(FromRegister.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_nameUserKeyPressed
 
